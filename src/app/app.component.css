@@ -1,0 +1,13 @@
+.drawingCanvas {
+    background-color: lightgray;
+}
+
+.prediction-canvas{
+    width: 100px;
+    margin: 20px;
+}
+
+.prediction-div {
+    display: inline-block;
+    margin: 10px;
+}

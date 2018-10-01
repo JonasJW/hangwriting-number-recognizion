@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+.prediction-canvas{
+    width: 100px;
+    margin: 20px;
+}
+
+.prediction-div {
+    display: inline-block;
+    margin: 10px;
+}
