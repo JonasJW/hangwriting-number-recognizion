@@ -45,10 +45,21 @@ export class AppComponent implements OnInit {
         this.onPredict();
       }
     };
-    this.drawingCanvas.nativeElement.onmousemove = (e) => {
+
+    this.drawingCanvas.nativeElement.addEventListener('touchmove', (e) => {
+      this.isDrawing = true;
+      drawing(e);
+    });
+    this.drawingCanvas.nativeElement.addEventListener('touchend', (e) => {
+      if (this.instandPredict) {
+        this.onPredict();
+      }
+    });
+
+    const drawing = (e) => {
       if (this.isDrawing) {
-        const x = e.pageX - this.drawingCanvas.nativeElement.offsetLeft;
-        const y = e.pageY - this.drawingCanvas.nativeElement.offsetTop;
+        const x = (e.pageX  || e.changedTouches[0].pageX) - this.drawingCanvas.nativeElement.offsetLeft;
+        const y = (e.pageY  || e.changedTouches[0].pageY) - this.drawingCanvas.nativeElement.offsetTop;
 
         const radius = 10;
         const color = '#fff';
@@ -60,6 +71,8 @@ export class AppComponent implements OnInit {
         this.ctx.fill();
       }
     };
+
+    this.drawingCanvas.nativeElement.onmousemove = drawing;
   }
 
   clearDrawingCanvas() {
