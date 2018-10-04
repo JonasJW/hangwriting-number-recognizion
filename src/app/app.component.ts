@@ -63,8 +63,6 @@ export class AppComponent implements OnInit {
         const x = e.layerX;
         const y = e.layerY;
 
-        console.log(e, x, y);
-
         const radius = 10;
         const color = '#fff';
 

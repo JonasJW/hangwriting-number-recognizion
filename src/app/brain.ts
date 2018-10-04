@@ -21,7 +21,8 @@ export class Brain {
     async loadModelFromStorage() {
 
         try {
-            this.model = await tf.loadModel('localstorage://my-model-1');
+            this.model = await tf.loadModel('../assets/model/model-1a/model.json');
+            console.log(this.model);
             await this.data.load();
         } catch {
             await this.data.load();
@@ -80,14 +81,9 @@ export class Brain {
           metrics: ['accuracy'],
         });
 
-        // How many examples the model should "see" before making a parameter update.
         const BATCH_SIZE = 64;
-        // How many batches to train the model for.
         const TRAIN_BATCHES = 1000;
 
-        // Every TEST_ITERATION_FREQUENCY batches, test accuracy over TEST_BATCH_SIZE examples.
-        // Ideally, we'd compute accuracy over the whole test set, but for performance
-        // reasons we'll use a subset.
         const TEST_BATCH_SIZE = 1000;
         const TEST_ITERATION_FREQUENCY = 5;
 
@@ -137,7 +133,6 @@ export class Brain {
 
         const result = this.model.predict(predictData);
 
-        result.print();
         const resultValueArr = Array.from(result.argMax(1).dataSync());
         const resultValue = resultValueArr[0] as number;
         const probability = (result.dataSync())[resultValue];
