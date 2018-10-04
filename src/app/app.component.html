@@ -1,26 +1,33 @@
+<div class="container">
+  <div class="card m-auto">
+    <div class="card-header">
+      <h2  *ngIf="brain.trained">Draw here:</h2>
+      <p *ngIf="!brain.trained"   style="margin: 1rem;">Training, please wait...</p>      
+    </div>
+    <div class="card-img-top">
+      <canvas id="canvas1" class="drawingCanvas" id=c1 width=280 height=280 #drawingCanvas></canvas>
+      <canvas style="visibility: hidden;" id="canvas2" #canvas2 width="28" height="28"></canvas>
+    </div>
+    <div class="card-footer  text-center">
+      <button class="btn btn-primary" (click)="onPredict()" [disabled]="!brain.trained">Predict</button>
+      <button class="btn btn-primary" (click)="onRandom()" [disabled]="!brain.trained">Random</button>
+      <br>
+      <input type="checkbox" [(ngModel)]="instandPredict">
+      <label class="ml-1">Instant Predict</label>
+    </div>
+  </div>
 
-<div class="drawing">
-  <canvas id="canvas1" class="drawingCanvas" id=c1 width=280 height=280 #drawingCanvas>
-
-  </canvas>
-
-  <canvas style="visibility: hidden;" id="canvas2" #canvas2 width="28" height="28"></canvas>
-
-</div>
-
-<input type="checkbox" [(ngModel)]="instandPredict">
-<label>Instant Predict</label>
-<button (click)="onPredict()" [disabled]="!brain.trained">Predict</button>
-<button (click)="onRandom()" [disabled]="!brain.trained">Random</button>
-<p *ngIf="!brain.trained">Training, please wait...</p>
-<hr>
-
-<h2>Results:</h2>
-<div id="predictionResult"></div>
-
-<!-- <div class="test">
-    <canvas id="canvas"></canvas>
-    <button (click)="onPredict()">Predict</button>
+  <!-- <div class="drawing text-center" style="margin: 3rem;">
+  </div>
+  
+  <div class="inputs text-center">
   </div> -->
+
+  
+  <h2>Results:</h2>
+  <hr>
+  <div id="predictionResult"></div>
+  
+</div>
 
 

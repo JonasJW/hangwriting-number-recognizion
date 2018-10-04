@@ -15,10 +15,20 @@ export class Brain {
     }
 
     async setup() {
-        await this.data.load();
-        this.createModel();
-        await this.train();
-        this.loaded = true;
+        this.loadModelFromStorage();
+    }
+
+    async loadModelFromStorage() {
+
+        try {
+            this.model = await tf.loadModel('localstorage://my-model-1');
+            await this.data.load();
+        } catch {
+            await this.data.load();
+            this.createModel();
+            await this.train();
+        }
+        this.trained = true;
     }
 
     createModel() {
@@ -61,7 +71,7 @@ export class Brain {
     }
 
     async train() {
-        const learningRate = 0.1;
+        const learningRate = 0.01;
         const optimizier = tf.train.sgd(learningRate);
 
         this.model.compile({
@@ -73,12 +83,12 @@ export class Brain {
         // How many examples the model should "see" before making a parameter update.
         const BATCH_SIZE = 64;
         // How many batches to train the model for.
-        const TRAIN_BATCHES = 100;
+        const TRAIN_BATCHES = 1000;
 
         // Every TEST_ITERATION_FREQUENCY batches, test accuracy over TEST_BATCH_SIZE examples.
         // Ideally, we'd compute accuracy over the whole test set, but for performance
         // reasons we'll use a subset.
-        const TEST_BATCH_SIZE = 100;
+        const TEST_BATCH_SIZE = 1000;
         const TEST_ITERATION_FREQUENCY = 5;
 
         for (let i = 0; i < TRAIN_BATCHES; i++) {
@@ -113,6 +123,8 @@ export class Brain {
 
         console.log('trained');
         this.trained = true;
+        const saved = await this.model.save('localstorage://my-model-1');
+        console.log('model saved: ', saved);
     }
 
     getRandomMnistImage() {
@@ -130,6 +142,6 @@ export class Brain {
         const resultValue = resultValueArr[0] as number;
         const probability = (result.dataSync())[resultValue];
 
-        return { result: resultValue, probablilty: probability };
+        return { result: resultValue, probablilty: Math.round(probability * 100) / 100 };
       }
 }

@@ -18,6 +18,8 @@ export class AppComponent implements OnInit {
   loaded = false;
   instandPredict = true;
 
+  predictions: { prediction: number, probability: number };
+
   @ViewChild('drawingCanvas') drawingCanvas: ElementRef;
   ctx;
 
@@ -58,8 +60,10 @@ export class AppComponent implements OnInit {
 
     const drawing = (e) => {
       if (this.isDrawing) {
-        const x = (e.pageX  || e.changedTouches[0].pageX) - this.drawingCanvas.nativeElement.offsetLeft;
-        const y = (e.pageY  || e.changedTouches[0].pageY) - this.drawingCanvas.nativeElement.offsetTop;
+        const x = e.layerX;
+        const y = e.layerY;
+
+        console.log(e, x, y);
 
         const radius = 10;
         const color = '#fff';
@@ -94,21 +98,33 @@ export class AppComponent implements OnInit {
 
   draw(data, predicted) {
     const div = document.createElement('div');
-    div.className = 'prediction-div';
+    div.className = 'prediction-div card';
+    div.style.width = '170px';
+
+    const body = document.createElement('div');
+    body.className = 'card-img-top';
+    body.style.height = '168px';
+    div.appendChild(body);
+
+    const footer = document.createElement('div');
+    footer.className = 'card-footer';
+    div.appendChild(footer);
 
     const canvas = document.createElement('canvas');
     canvas.width = 28;
     canvas.height = 28;
+    canvas.style.zoom = '6';
 
     const ctx = canvas.getContext('2d');
+    ctx.scale(2, 2);
 
     const label = document.createElement('div');
     label.innerHTML = 'Predicted: ' + predicted.result + '<br>' + 'Probanility: ' + predicted.probablilty;
 
     ctx.putImageData(data, 0, 0);
 
-    div.appendChild(canvas);
-    div.appendChild(label);
+    body.appendChild(canvas);
+    footer.appendChild(label);
     document.getElementById('predictionResult').appendChild(div);
   }
 
@@ -126,7 +142,6 @@ export class AppComponent implements OnInit {
 
   private tensorToImageData(tensor) {
     const tensorData = tensor.dataSync();
-
     const imgData = this.ctx.createImageData(28, 28);
 
     for (let i = 0; i < tensorData.length; i++) {
@@ -136,8 +151,6 @@ export class AppComponent implements OnInit {
       imgData.data[j + 2] = tensorData[i] * 255;
       imgData.data[j + 3] = 255; // tranparancy
     }
-
-    console.log(imgData);
 
     return imgData;
   }
@@ -153,10 +166,8 @@ export class AppComponent implements OnInit {
 
   onRandom() {
     const data = this.brain.getRandomMnistImage();
-    console.log(data.xs.dataSync());
 
     const predicted = this.brain.predict(data.xs);
-    console.log(predicted);
     this.draw(this.tensorToImageData(data.xs), predicted);
   }
 }
