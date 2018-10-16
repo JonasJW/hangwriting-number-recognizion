@@ -1,11 +1,11 @@
 <div class="container">
-  <div class="card m-auto">
+  <div class="card m-auto" style="width: 300px;">
     <div class="card-header">
       <h2  *ngIf="brain.trained">Draw here:</h2>
       <p *ngIf="!brain.trained"   style="margin: 1rem;">Training, please wait...</p>      
     </div>
-    <div class="card-img-top">
-      <canvas id="canvas1" class="drawingCanvas" id=c1 width=280 height=280 #drawingCanvas></canvas>
+    <div class="card-img-top" id="drawDiv">
+      <canvas id="canvas1" class="drawingCanvas" id=c1 width=298 height=298 #drawingCanvas></canvas>
       <canvas style="visibility: hidden;" id="canvas2" #canvas2 width="28" height="28"></canvas>
     </div>
     <div class="card-footer  text-center">
@@ -17,16 +17,11 @@
     </div>
   </div>
 
-  <!-- <div class="drawing text-center" style="margin: 3rem;">
+  <div class="scroll">
+    <h2>Results:</h2>
+    <hr>
+    <div class="predictionResult" id="predictionResult"></div>
   </div>
-  
-  <div class="inputs text-center">
-  </div> -->
-
-  
-  <h2>Results:</h2>
-  <hr>
-  <div id="predictionResult"></div>
   
 </div>
 

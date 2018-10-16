@@ -29,3 +29,32 @@ button {
     margin: 10px;
     width: 150px;
 }
+
+.predictionResult {
+    margin: auto;
+}
+
+.drawingCanvas {
+    background-color: lightgray;
+}
+
+.prediction-div {
+    display: inline-block;
+    margin: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        overflow: hidden;
+    }
+
+    .scroll {
+        overflow: scroll !important;
+        position: absolute;
+        width: 90%;
+        bottom: 0;
+        height: calc(100vh - 490px);
+    }
+
+    
+}

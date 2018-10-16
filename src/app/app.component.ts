@@ -36,7 +36,18 @@ export class AppComponent implements OnInit {
   }
 
   setupDrawingCanvas() {
+
+    // if (window.matchMedia('(max-width: 600px)')) {
+    // } else {
+    //   this.drawingCanvas.nativeElement.width = 200;
+    //   this.drawingCanvas.nativeElement.height = 200;
+
+    //   document.getElementById('drawDiv').style.height = '200px';
+
+    // }
+
     this.clearDrawingCanvas();
+
 
     this.drawingCanvas.nativeElement.onmousedown = () => {
       this.isDrawing = true;
@@ -60,8 +71,8 @@ export class AppComponent implements OnInit {
 
     const drawing = (e) => {
       if (this.isDrawing) {
-        const x = e.layerX;
-        const y = e.layerY;
+        const x = e.layerX || (e.changedTouches[0].clientX - this.drawingCanvas.nativeElement.getBoundingClientRect().left);
+        const y = e.layerY || (e.changedTouches[0].clientY - this.drawingCanvas.nativeElement.getBoundingClientRect().top);
 
         const radius = 10;
         const color = '#fff';
